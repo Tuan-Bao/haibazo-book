@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import os
 from api import author_router, book_router, review_router
 
 app = FastAPI(
@@ -8,9 +9,13 @@ app = FastAPI(
     version="1.0.0",
 )
 
+
+frontend_origin = os.getenv("FRONTEND_ORIGIN", "*")
+origins = [frontend_origin] if frontend_origin != '*' else ["*"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
